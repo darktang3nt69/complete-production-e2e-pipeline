@@ -2,6 +2,11 @@ pipeline{
     agent {
         label 'orange-pi'
     }
+
+    tools{
+        jdk 'Java17'
+        maven 'Maven3'
+    }
     
     stages{
         stage('clean'){
@@ -16,5 +21,18 @@ pipeline{
             }
             
         }
+        stage('Building the java application'){
+            steps{
+                sh 'mv clean package'
+            }
+            
+        }
+        stage('Testing the java application'){
+            steps{
+                sh 'mv test'
+            }
+            
+        }
+
     }
 }
