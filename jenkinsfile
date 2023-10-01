@@ -8,7 +8,7 @@ pipeline{
             cleanWs()
         }
      
-        stage(Checkout from SCM){
+        stage(checkout from SCM){
         git branch: 'main', url : 'https://github.com/darktang3nt69/complete-production-e2e-pipeline.git'
         }
     }
