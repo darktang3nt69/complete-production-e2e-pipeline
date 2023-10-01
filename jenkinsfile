@@ -4,12 +4,12 @@ pipeline{
     }
     
     stages{
-        stage(clean){
+        stage('clean'){
             cleanWs()
         }
      
-        stage(checkout from SCM){
-        git branch: 'main', url : 'https://github.com/darktang3nt69/complete-production-e2e-pipeline.git'
+        stage('Checkout from SCM'){
+            git branch: 'main', url : 'https://github.com/darktang3nt69/complete-production-e2e-pipeline.git'
         }
     }
 }
