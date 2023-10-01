@@ -23,13 +23,13 @@ pipeline{
         }
         stage('Building the java application'){
             steps{
-                sh 'mv clean package'
+                sh 'mvn clean package'
             }
             
         }
         stage('Testing the java application'){
             steps{
-                sh 'mv test'
+                sh 'mvn test'
             }
             
         }
