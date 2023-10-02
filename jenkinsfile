@@ -33,6 +33,14 @@ pipeline{
             }
             
         }
+        stage('sonarqube quality gate analysis'){
+            steps{
+                withSonarQubeEnv(credentialsID: 'sonarqube-token'){
+                    sh 'mvn sonar:sonar'
+                }
+            }
+            
+        }
 
     }
 }
