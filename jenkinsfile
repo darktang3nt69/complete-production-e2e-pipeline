@@ -11,32 +11,45 @@ pipeline{
     stages{
         stage('clean'){
             steps{
-                cleanWs()
+                // clean workspace
+                cleanWs() 
             }
         }
      
         stage('Checkout from SCM'){
             steps{
+                // Clone the main branch of the repo
                 git branch: 'main', url : 'https://github.com/darktang3nt69/complete-production-e2e-pipeline.git'
             }
             
         }
         stage('Building the java application'){
             steps{
+                // Build the Java application
                 sh 'mvn clean package'
             }
             
         }
         stage('Testing the java application'){
             steps{
+                // Run the test cases
                 sh 'mvn test'
             }
             
         }
-        stage('sonarqube quality gate analysis'){
+        stage('sonarqube analysis'){
             steps{
+                // trigger sonarqube analysis
                 withSonarQubeEnv(credentialsId: 'sonarqube-token', installationName: 'sonarqube scanner'){
                     sh 'mvn sonar:sonar'
+                }
+            }
+            
+        }
+        stage('Quality Gate'){
+            steps{  
+                    // wait for quality gate to finish. Do not fail the pipline if not passed.
+                    waitForQualityGate abortPipeline: false, credentialsId: 'sonarqube-token'
                 }
             }
             
