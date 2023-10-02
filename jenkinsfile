@@ -71,7 +71,7 @@ pipeline{
                 script{
                     // Build the docker image.
                     docker.withRegistry('', DOCKER_PASS){
-                    docker_image = docker.build "${IMAGE_NAME}"
+                    docker_image = docker.build("${IMAGE_NAME}")
                 }
                 // Push docker image with latest and ${IMAGE_TAG} tags.
                 docker.withRegistry('', DOCKER_PASS){
