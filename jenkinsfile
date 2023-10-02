@@ -1,11 +1,25 @@
 pipeline{
     agent {
+        // speicify the label of the jenkins worker
         label 'orange-pi'
     }
 
     tools{
+        // Tools we use later in the pipeline.
         jdk 'Java17'
         maven 'Maven3'
+    }
+
+    environment{
+        // ENV VARS for later use in pipeline
+        APP_NAME    = "complete-production-e2e-pipeline-project"
+        RELEASE     = "1.0.0"
+        DOCKER_USER = 'darktang3nt'
+        DOCKER_PASS = 'dockerhub'
+        // ${} syntax can be used to reference other env vars
+        IMAGE_NAME  = "${DOCKER_USER}" + "/" + "${APP_NAME}"
+        // BUILD_NUMBER is jenkins provided env vars.
+        IMAGE_TAG   = "${RELEASE}-${BUILD_NUMBER}"
     }
     
     stages{
@@ -48,8 +62,22 @@ pipeline{
         }
         stage('Quality Gate'){
             steps{  
-                    // wait for quality gate to finish. Do not fail the pipline if not passed.
-                    waitForQualityGate abortPipeline: false, credentialsId: 'sonarqube-token'
+                // wait for quality gate to finish. Do not fail the pipline if not passed.
+                waitForQualityGate abortPipeline: false, credentialsId: 'sonarqube-token'
+            }
+        }
+        stage('Build and push to dockerhub'){
+            steps{  
+                // wait for quality gate to finish. Do not fail the pipline if not passed.
+                docker.withRegistry('', DOCKER_PASS){
+                    docker_image = docker.build "${IMAGE_NAME}"
+                }
+
+                docker.withRegistry('', DOCKER_PASS){
+                    docker_image.push("${IMAGE_TAG}")
+                    docker_image.push('latest')
+                }
+                    
             }
         }
             
