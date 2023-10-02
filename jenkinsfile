@@ -67,17 +67,19 @@ pipeline{
             }
         }
         stage('Build and push to dockerhub'){
-            script{  
-                // wait for quality gate to finish. Do not fail the pipline if not passed.
-                docker.withRegistry('', DOCKER_PASS){
+            steps{
+                script{
+                    // Build the docker image.
+                    docker.withRegistry('', DOCKER_PASS){
                     docker_image = docker.build "${IMAGE_NAME}"
                 }
-
+                // Push docker image with latest and ${IMAGE_TAG} tags.
                 docker.withRegistry('', DOCKER_PASS){
                     docker_image.push("${IMAGE_TAG}")
                     docker_image.push('latest')
                 }
-                    
+
+                }  
             }
         }
             
