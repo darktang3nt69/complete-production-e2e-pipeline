@@ -21,4 +21,4 @@ COPY --from=build /app/target/demoapp.jar /app/
 # expose port 8080
 EXPOSE 8080
 # run the application.
-CMD [ "java", '-jar', 'demoapp.jar' ]
+CMD [ "java", "-jar", "demoapp.jar" ]
