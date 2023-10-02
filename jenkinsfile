@@ -67,7 +67,7 @@ pipeline{
             }
         }
         stage('Build and push to dockerhub'){
-            steps{  
+            script{  
                 // wait for quality gate to finish. Do not fail the pipline if not passed.
                 docker.withRegistry('', DOCKER_PASS){
                     docker_image = docker.build "${IMAGE_NAME}"
