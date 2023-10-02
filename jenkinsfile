@@ -35,7 +35,7 @@ pipeline{
         }
         stage('sonarqube quality gate analysis'){
             steps{
-                withSonarQubeEnv(credentialsId: 'sonarqube-token'){
+                withSonarQubeEnv(credentialsId: 'sonarqube-token', installationName: 'sonarqube scanner'){
                     sh 'mvn sonar:sonar'
                 }
             }
