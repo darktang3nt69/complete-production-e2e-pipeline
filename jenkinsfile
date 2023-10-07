@@ -34,6 +34,7 @@ pipeline{
         stage('Checkout from SCM'){
             steps{
                 // Clone the main branch of the repo
+                // git branch: 'main', url : 'https://github.com/darktang3nt69/complete-production-e2e-pipeline.git'
                 checkout scm
             }
             
@@ -100,13 +101,6 @@ pipeline{
                 }
             }
         }
-
-        stage("Checkout gitops repo") {
-            steps {
-                git 'https://github.com/darktang3nt69/gitops-complete-production-e2e-pipeline', branch: 'master'
-            }
-        }
-
         stage("Update image in deployment"){
             steps{
                 dir('deployments') {
