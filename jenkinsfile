@@ -101,14 +101,37 @@ pipeline{
             }
         }
 
-        stage("Trigger CD Pipeline") {
+        stage("Checkout gitops repo") {
             steps {
-                script {
-                    sh "curl -v -k --user admin:${JENKINS_API_TOKEN} -X POST -H 'cache-control: no-cache' -H 'content-type: application/x-www-form-urlencoded' --data 'IMAGE_TAG=${IMAGE_NAME}${IMAGE_TAG}' '${JENKINS_URL}/job/gitops-complete-pipeline/buildWithParameters?token=gitops-token'"
+                git 'https://github.com/darktang3nt69/gitops-complete-production-e2e-pipeline', branch: 'master'
+            }
+        }
+
+        stage("Update image in deployment"){
+            steps{
+                dir('deployments') {
+                sh """
+                echo "Before Deployment:"
+                cat deployment.yaml
+                sed -i "s|image: .*|image: ${IMAGE_TAG}|" deployment.yaml
+                echo "After Deployment:"
+                cat deployment.yaml
+                """
                 }
             }
         }
-            
+
+        stage('Push Changes'){
+            steps{
+                sh """
+                git add .
+                git commit -m "Jenkins CD: updated image"
+                """
+                withCredentials([gitUsernamePassword(credentialsId: 'github-creds')]) {
+                    sh "git push -u origin HEAD:main"
+            }
+            }
+        }
     }
 
 }
