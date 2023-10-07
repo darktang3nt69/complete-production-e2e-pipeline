@@ -34,7 +34,7 @@ pipeline{
         stage('Checkout from SCM'){
             steps{
                 // Clone the main branch of the repo
-                git branch: 'main', url : 'https://github.com/darktang3nt69/complete-production-e2e-pipeline.git'
+                checkout scm
             }
             
         }
@@ -104,7 +104,7 @@ pipeline{
         stage("Trigger CD Pipeline") {
             steps {
                 script {
-                    sh "curl -v -k --user admin:${JENKINS_API_TOKEN} -X POST -H 'cache-control: no-cache' -H 'content-type: application/x-www-form-urlencoded' --data 'IMAGE_TAG=${IMAGE_TAG}' '${JENKINS_URL}/job/gitops-complete-pipeline/buildWithParameters?token=gitops-token'"
+                    sh "curl -v -k --user admin:${JENKINS_API_TOKEN} -X POST -H 'cache-control: no-cache' -H 'content-type: application/x-www-form-urlencoded' --data 'IMAGE_TAG=${IMAGE_TAG}' '${JENKINS_URL}/job/gitops-complete-pipeline/buildWithParameters?token=JENKINS_GITOPS_TOKEN'"
                 }
             }
         }
