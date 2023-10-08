@@ -109,7 +109,7 @@ pipeline{
                 cat deployments/deployment.yaml
                 sed -i "s/${APP_NAME}.*/${APP_NAME}:${IMAGE_TAG}/g" deployments/deployment.yaml
                 echo "After Deployment:"
-                cat deployment.yaml
+                cat deployments/deployment.yaml
                 """
             }
         }
