@@ -13,7 +13,7 @@ spec:
     spec:
       containers:
       - name: devops-project-app-container-1
-        image: darktang3nt/complete-production-e2e-pipeline-project:1.0.0-56
+        image: darktang3nt/complete-production-e2e-pipeline-project:1.0.0-59
         resources:
           limits:
             memory: "128Mi"
