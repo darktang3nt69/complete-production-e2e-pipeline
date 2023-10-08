@@ -2,5 +2,5 @@ projectKey=com.dmancloud.dinesh:demoapp
 serverUrl=http://sonarqube:9000
 serverVersion=10.2.1.78527
 dashboardUrl=http://sonarqube:9000/dashboard?id=com.dmancloud.dinesh%3Ademoapp
-ceTaskId=AYsNzWssg6WYjp95i2pr
-ceTaskUrl=http://sonarqube:9000/api/ce/task?id=AYsNzWssg6WYjp95i2pr
+ceTaskId=AYsN0z_jg6WYjp95i2ps
+ceTaskUrl=http://sonarqube:9000/api/ce/task?id=AYsN0z_jg6WYjp95i2ps
