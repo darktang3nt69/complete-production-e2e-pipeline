@@ -105,11 +105,12 @@ pipeline{
         stage("Update image in deployment"){
             steps{
                 sh """
+                git clone https://github.com/darktang3nt69/gitops-complete-production-e2e-pipeline
                 echo "Before Deployment:"
-                cat deployments/deployment.yaml
-                sed -i "s/${APP_NAME}.*/${APP_NAME}:${IMAGE_TAG}/g" deployments/deployment.yaml
+                cat gitops-complete-production-e2e-pipeline/deployment.yaml
+                sed -i "s/${APP_NAME}.*/${APP_NAME}:${IMAGE_TAG}/g" gitops-complete-production-e2e-pipeline/deployment.yaml
                 echo "After Deployment:"
-                cat deployments/deployment.yaml
+                cat gitops-complete-production-e2e-pipeline/deployment.yaml
                 """
             }
         }
@@ -117,6 +118,7 @@ pipeline{
         stage('Push Changes'){
             steps{
                 sh """
+                cd gitops-complete-production-e2e-pipeline
                 git add .
                 git commit -m "Jenkins CD: updated image"
                 """
