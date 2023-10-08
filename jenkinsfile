@@ -8,6 +8,7 @@ pipeline{
         // Tools we use later in the pipeline.
         jdk 'Java17'
         maven 'Maven3'
+        docker 'docker'
     }
 
     environment{
@@ -103,15 +104,13 @@ pipeline{
         }
         stage("Update image in deployment"){
             steps{
-                dir('deployments') {
                 sh """
                 echo "Before Deployment:"
-                cat deployment.yaml
-                sed -i "s|image: .*|image: ${IMAGE_TAG}|" deployment.yaml
+                cat deployments/deployment.yaml
+                sed -i "s/${APP_NAME}.*/${APP_NAME}:${IMAGE_TAG}/g" deployments/deployment.yaml
                 echo "After Deployment:"
                 cat deployment.yaml
                 """
-                }
             }
         }
 
