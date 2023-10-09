@@ -123,7 +123,7 @@ pipeline{
                 git commit -m "Jenkins CD: updated image"
                 """
                 withCredentials([gitUsernamePassword(credentialsId: 'github-creds')]) {
-                    sh "git push -u origin HEAD:main"
+                    sh "git push -u origin HEAD:master"
             }
             }
         }
