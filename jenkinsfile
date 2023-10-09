@@ -105,10 +105,11 @@ pipeline{
         }
         stage("Update image in deployment"){
             steps{
-                sh "curl ${JENKINS_URL}/job/gitops-complete-pipeline//buildWithParameters?token=${JENKINS_API_TOKEN}?IMAGE_TAG=${IMAGE_TAG}"
-            }
+                script {
+                    sh "curl -v -k --user admin:${JENKINS_API_TOKEN} -X POST -H 'cache-control: no-cache' -H 'content-type: application/x-www-form-urlencoded' --data 'IMAGE_TAG=${IMAGE_TAG}' '${JENKINS_URL}/job/gitops-complete-pipeline/buildWithParameters?token=JENKINS_GITOPS_TOKEN'"
+                }
         }
-
+        }
         // stage('Push Changes'){
         //     steps{
         //         sh """
@@ -121,6 +122,7 @@ pipeline{
         //     }
         //     }
         // }
+    
     }
 
 }
