@@ -22,6 +22,7 @@ pipeline{
         // BUILD_NUMBER is jenkins provided env vars.
         IMAGE_TAG         = "${RELEASE}-${BUILD_NUMBER}"
         JENKINS_API_TOKEN = credentials("JENKINS_API_TOKEN")
+        JENKINS_URL       = "https://jenkins.darktang3nt.cloud/"
     }
     
     stages{
@@ -104,29 +105,22 @@ pipeline{
         }
         stage("Update image in deployment"){
             steps{
-                sh """
-                git clone https://github.com/darktang3nt69/gitops-complete-production-e2e-pipeline
-                echo "Before Deployment:"
-                cat gitops-complete-production-e2e-pipeline/deployment.yaml
-                sed -i "s/${APP_NAME}.*/${APP_NAME}:${IMAGE_TAG}/g" gitops-complete-production-e2e-pipeline/deployment.yaml
-                echo "After Deployment:"
-                cat gitops-complete-production-e2e-pipeline/deployment.yaml
-                """
+                sh "curl ${JENKINS_URL}/job/gitops-complete-pipeline//buildWithParameters?token=${JENKINS_API_TOKEN}?IMAGE_TAG=${IMAGE_TAG}"
             }
         }
 
-        stage('Push Changes'){
-            steps{
-                sh """
-                cd gitops-complete-production-e2e-pipeline
-                git add .
-                git commit -m "Jenkins CD: updated image"
-                """
-                withCredentials([gitUsernamePassword(credentialsId: 'github-creds')]) {
-                    sh "git push -u origin HEAD:master"
-            }
-            }
-        }
+        // stage('Push Changes'){
+        //     steps{
+        //         sh """
+        //         cd gitops-complete-production-e2e-pipeline
+        //         git add .
+        //         git commit -m "Jenkins CD: updated image"
+        //         """
+        //         withCredentials([gitUsernamePassword(credentialsId: 'github-creds')]) {
+        //             sh "git push -u origin HEAD:master"
+        //     }
+        //     }
+        // }
     }
 
 }
